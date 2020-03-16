@@ -20,4 +20,9 @@ public class BasePage {
         wait.clickableElement(webElement);
         webElement.click();
     }
+
+    public void clickToIsDisplayedElement(WebElement webElement) {
+        wait.isDisplayedElement(webElement);
+        webElement.click();
+    }
 }

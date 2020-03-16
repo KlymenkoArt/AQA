@@ -32,4 +32,8 @@ public class Wait {
     public void clickableElement(WebElement webElement) {
         useWait(ExpectedConditions.elementToBeClickable(webElement));
     }
+
+    public void isDisplayedElement(WebElement webElement) {
+        useWait(ExpectedConditions.visibilityOf(webElement));
+    }
 }
