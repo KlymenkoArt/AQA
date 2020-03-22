@@ -25,4 +25,11 @@ public class BasePage {
         wait.isDisplayedElement(webElement);
         webElement.click();
     }
+
+    public void sendKeysWithWait(WebElement input, String value) {
+        wait.isDisplayedElement(input);
+        input.click();
+        input.clear();
+        input.sendKeys(value);
+    }
 }
