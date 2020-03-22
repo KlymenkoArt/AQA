@@ -10,7 +10,7 @@ import java.time.Duration;
 public class Wait {
     WebDriver webDriver;
 
-    public Wait(WebDriver webDriver){
+    public Wait(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 
@@ -35,5 +35,24 @@ public class Wait {
 
     public void isDisplayedElement(WebElement webElement) {
         useWait(ExpectedConditions.visibilityOf(webElement));
+    }
+
+    public void waitForAjaxToFinish() {
+        WebDriverWait wait = new WebDriverWait(webDriver, 5000);
+        sleep(2);
+        wait.until(new ExpectedCondition<Boolean>() {
+                       public Boolean apply(WebDriver wdriver) {
+                           return ((JavascriptExecutor) webDriver).executeScript("return jQuery.active == 0").equals(true);
+                       }
+                   }
+        );
+    }
+
+    public void sleep(long seconds) {
+        try {
+            Thread.sleep(Duration.ofSeconds(seconds).toMillis());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
