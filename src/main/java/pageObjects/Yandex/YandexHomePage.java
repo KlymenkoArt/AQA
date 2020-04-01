@@ -1,6 +1,7 @@
 package pageObjects.Yandex;
 
 import automationFramework.Wait;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -30,15 +31,18 @@ public class YandexHomePage extends BasePage {
         PageFactory.initElements(webDriver, this);
     }
 
+    @Step("open http://www.yandex.by/")
     public void getPage() {
         webDriver.get("http://www.yandex.by/");
     }
 
+    @Step("Click on link to change location")
     public YandexLocation clickOnGeoLink() {
         geoLink.click();
         return new YandexLocation(webDriver);
     }
 
+    @Step("Click to button 'More'")
     public void clickToButtonMore() {
         clickWithWait(linkMore);
     }
@@ -53,6 +57,7 @@ public class YandexHomePage extends BasePage {
         return listValues;
     }
 
+    @Step("Click to button SignIn")
     public PassportYandexPage clickSignIn() {
         clickWithWait(signIn.findElement(By.xpath("./..")));
         return new PassportYandexPage(webDriver);
@@ -72,6 +77,7 @@ public class YandexHomePage extends BasePage {
         this.switchToTab(tabs.get(0));
     }
 
+    @Step("Open DropDown with languages")
     public void selectLanguage(String lang) {
         languageDropDown.click();
         this.clickWithWait(this.webDriver.findElement(By.xpath(String.format("//*[@aria-label='%s']", lang))));

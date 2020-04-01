@@ -1,6 +1,7 @@
 package pageObjects.MailYandex;
 
 import automationFramework.Wait;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -24,11 +25,13 @@ public class MailYandexPage extends BasePage {
         PageFactory.initElements(webDriver, this);
     }
 
+    @Step("Get name of user")
     public String getUserName() {
         wait.isDisplayedElement(nameUser);
         return nameUser.getText();
     }
 
+    @Step("Logout of page")
     public void logout() {
         openDropDownListButton.click();
         signOut.click();

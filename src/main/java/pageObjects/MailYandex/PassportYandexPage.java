@@ -1,6 +1,7 @@
 package pageObjects.MailYandex;
 
 import automationFramework.Wait;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -42,6 +43,7 @@ public class PassportYandexPage extends BasePage {
         actions.click(submit).perform();
     }
 
+    @Step("Enter login")
     public void enterLogin(String login, int numberPage) {
         final List<String> tabs = this.getActiveTabs();
         this.switchToTab(tabs.get(numberPage));
@@ -54,6 +56,7 @@ public class PassportYandexPage extends BasePage {
         wait.waitForAjaxToFinish();
     }
 
+    @Step("Change user")
     private boolean isAccountExist() {
         try {
             this.webDriver.findElement(By.xpath("//*[@class='passp-current-account__avatar']"));
@@ -63,17 +66,20 @@ public class PassportYandexPage extends BasePage {
         }
     }
 
+    @Step("Enter value in password field")
     public void enterPassword(String password) {
         wait.isDisplayedElement(passwordField);
         passwordField.sendKeys(password);
     }
 
+    @Step("logIn of page")
     public MailYandexPage loginToMail() {
         submit.click();
         wait.waitForAjaxToFinish();
         return new MailYandexPage(webDriver);
     }
 
+    @Step("Get error message")
     public String getErrorMessage() {
         return errorMessage.getText();
     }
