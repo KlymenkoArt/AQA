@@ -16,4 +16,8 @@ public class BaseTest {
     public void shutDownWebDriver() {
         InitialDriver.closeWebDriver();
     }
+
+    public void closeTab() {
+        this.webDriver.close();
+    }
 }
