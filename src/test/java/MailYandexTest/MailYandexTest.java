@@ -1,6 +1,8 @@
 package MailYandexTest;
 
 import automationFramework.BaseTest;
+import io.qameta.allure.Description;
+import io.qameta.allure.Step;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -32,6 +34,7 @@ public class MailYandexTest extends BaseTest {
     }
 
     @Test
+    @Description("Сheck authorization on page mail.yandex.by")
     public void authorizationOfMailYandex() {
         PassportYandexPage passportYandexPage = yandexHomePage.clickSignIn();
         closeTab();
@@ -43,21 +46,25 @@ public class MailYandexTest extends BaseTest {
     }
 
     @Test
+    @Description("Check logout of mail.yandex")
     public void assertLogout() {
         this.authorizationOfMailYandex();
         Assert.assertEquals(yandexHomePage.isLogOut(), "Войти в почту", "Logout is failed");
     }
 
     @Test
+    @Description("Check entered incorrect password")
     public void enterIncorrectPassword() {
         PassportYandexPage passportYandexPage = yandexHomePage.clickSignIn();
         closeTab();
         passportYandexPage.enterLogin("380939791927", 0);
         passportYandexPage.enterPassword("fhxbr19966");
+        passportYandexPage.loginToMail();
         Assert.assertEquals(passportYandexPage.getErrorMessage(), "Неверный пароль", "Entered correct password");
     }
 
     @Test
+    @Description("Check entered incorrect login")
     public void enterIncorrectLogin() {
         PassportYandexPage passportYandexPage = yandexHomePage.clickSignIn();
         closeTab();
@@ -66,6 +73,7 @@ public class MailYandexTest extends BaseTest {
     }
 
     @Test(dataProvider = "links")
+    @Description("Сheck page transition")
     public void assertUrlOfPages(String id, String url) {
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(yandexHomePage.getUrlOfPage(id).contains(url), "Url is incorrect");
@@ -75,6 +83,7 @@ public class MailYandexTest extends BaseTest {
     }
 
     @Test
+    @Description("Сheck language change")
     public void enterLanguage() {
         yandexHomePage.selectLanguage("Bel");
         Assert.assertTrue(yandexHomePage.isLanguageSelected("be"), "Language is not Bel");
