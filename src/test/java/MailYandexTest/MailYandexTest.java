@@ -1,7 +1,6 @@
 package MailYandexTest;
 
 import automationFramework.BaseTest;
-import io.qameta.allure.Description;
 import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -11,6 +10,9 @@ import org.testng.asserts.SoftAssert;
 import pageObjects.MailYandex.MailYandexPage;
 import pageObjects.MailYandex.PassportYandexPage;
 import pageObjects.Yandex.YandexHomePage;
+import utils.ExtentReports.ExtentTestManager;
+
+import java.lang.reflect.Method;
 
 public class MailYandexTest extends BaseTest {
     private YandexHomePage yandexHomePage;
@@ -35,7 +37,9 @@ public class MailYandexTest extends BaseTest {
 
     @Test
     @Story(value = "Сheck authorization on page mail Yandex")
-    public void authorizationOfMailYandex() {
+    public void authorizationOfMailYandex(Method method) {
+        ExtentTestManager.startTest(method.getName(), "Сheck authorization on page mail Yandex.");
+
         PassportYandexPage passportYandexPage = yandexHomePage.clickSignIn();
         closeTab();
         passportYandexPage.enterLogin("380939791927", 0);
@@ -47,14 +51,18 @@ public class MailYandexTest extends BaseTest {
 
     @Test
     @Story(value = "Check logout of mail Yandex")
-    public void assertLogout() {
-        this.authorizationOfMailYandex();
+    public void assertLogout(Method method) {
+        this.authorizationOfMailYandex(method);
+        ExtentTestManager.startTest(method.getName(), "Сheck authorization on page mail Yandex, and logout.");
+
         Assert.assertEquals(yandexHomePage.isLogOut(), "Войти в почту", "Logout is failed");
     }
 
     @Test
     @Story(value = "Check entered incorrect password")
-    public void enterIncorrectPassword() {
+    public void enterIncorrectPassword(Method method) {
+        ExtentTestManager.startTest(method.getName(), "Check entered incorrect password");
+
         PassportYandexPage passportYandexPage = yandexHomePage.clickSignIn();
         closeTab();
         passportYandexPage.enterLogin("380939791927", 0);
@@ -65,7 +73,9 @@ public class MailYandexTest extends BaseTest {
 
     @Test
     @Story(value = "Check entered incorrect login")
-    public void enterIncorrectLogin() {
+    public void enterIncorrectLogin(Method method) {
+        ExtentTestManager.startTest(method.getName(), "Check entered incorrect login");
+
         PassportYandexPage passportYandexPage = yandexHomePage.clickSignIn();
         closeTab();
         passportYandexPage.enterLogin("380939791928", 0);
@@ -74,7 +84,9 @@ public class MailYandexTest extends BaseTest {
 
     @Test(dataProvider = "links")
     @Story(value = "Сheck page transition")
-    public void assertUrlOfPages(String id, String url) {
+    public void assertUrlOfPages(String id, String url, Method method) {
+        ExtentTestManager.startTest(method.getName(), "Check entered incorrect login");
+
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(yandexHomePage.getUrlOfPage(id).contains(url), "Url is incorrect");
         closeTab();
@@ -84,7 +96,9 @@ public class MailYandexTest extends BaseTest {
 
     @Test
     @Story(value = "Сheck language change")
-    public void enterLanguage() {
+    public void enterLanguage(Method method) {
+        ExtentTestManager.startTest(method.getName(), "Check entered incorrect login");
+
         yandexHomePage.selectLanguage("Bel");
         Assert.assertTrue(yandexHomePage.isLanguageSelected("be"), "Language is not Bel");
     }
