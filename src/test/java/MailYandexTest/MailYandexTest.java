@@ -2,7 +2,7 @@ package MailYandexTest;
 
 import automationFramework.BaseTest;
 import io.qameta.allure.Description;
-import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -34,7 +34,7 @@ public class MailYandexTest extends BaseTest {
     }
 
     @Test
-    @Description("Сheck authorization on page mail.yandex.by")
+    @Story(value = "Сheck authorization on page mail Yandex")
     public void authorizationOfMailYandex() {
         PassportYandexPage passportYandexPage = yandexHomePage.clickSignIn();
         closeTab();
@@ -46,14 +46,14 @@ public class MailYandexTest extends BaseTest {
     }
 
     @Test
-    @Description("Check logout of mail.yandex")
+    @Story(value = "Check logout of mail Yandex")
     public void assertLogout() {
         this.authorizationOfMailYandex();
         Assert.assertEquals(yandexHomePage.isLogOut(), "Войти в почту", "Logout is failed");
     }
 
     @Test
-    @Description("Check entered incorrect password")
+    @Story(value = "Check entered incorrect password")
     public void enterIncorrectPassword() {
         PassportYandexPage passportYandexPage = yandexHomePage.clickSignIn();
         closeTab();
@@ -64,7 +64,7 @@ public class MailYandexTest extends BaseTest {
     }
 
     @Test
-    @Description("Check entered incorrect login")
+    @Story(value = "Check entered incorrect login")
     public void enterIncorrectLogin() {
         PassportYandexPage passportYandexPage = yandexHomePage.clickSignIn();
         closeTab();
@@ -73,7 +73,7 @@ public class MailYandexTest extends BaseTest {
     }
 
     @Test(dataProvider = "links")
-    @Description("Сheck page transition")
+    @Story(value = "Сheck page transition")
     public void assertUrlOfPages(String id, String url) {
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(yandexHomePage.getUrlOfPage(id).contains(url), "Url is incorrect");
@@ -83,7 +83,7 @@ public class MailYandexTest extends BaseTest {
     }
 
     @Test
-    @Description("Сheck language change")
+    @Story(value = "Сheck language change")
     public void enterLanguage() {
         yandexHomePage.selectLanguage("Bel");
         Assert.assertTrue(yandexHomePage.isLanguageSelected("be"), "Language is not Bel");

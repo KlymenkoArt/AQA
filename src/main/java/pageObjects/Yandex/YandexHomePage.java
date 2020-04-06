@@ -31,7 +31,7 @@ public class YandexHomePage extends BasePage {
         PageFactory.initElements(webDriver, this);
     }
 
-    @Step("open http://www.yandex.by/")
+    @Step("Open base page: http://www.yandex.by/")
     public void getPage() {
         webDriver.get("http://www.yandex.by/");
     }
@@ -63,11 +63,13 @@ public class YandexHomePage extends BasePage {
         return new PassportYandexPage(webDriver);
     }
 
+    @Step("Logout is completed?")
     public String isLogOut() {
         wait.isDisplayedElement(signIn);
         return signIn.getText();
     }
 
+    @Step("URL is correct")
     public String getUrlOfPage(String pageId) {
         return clickToLinkAndGetURL(this.webDriver.findElement(By.xpath(String.format("//*[@data-id = '%s']", pageId))));
     }
@@ -83,6 +85,7 @@ public class YandexHomePage extends BasePage {
         this.clickWithWait(this.webDriver.findElement(By.xpath(String.format("//*[@aria-label='%s']", lang))));
     }
 
+    @Step("Language is correct?")
     public boolean isLanguageSelected(String lang) {
         return this.webDriver.findElement(By.xpath(String.format("//html[@lang='%s']", lang)))
                 .isDisplayed();

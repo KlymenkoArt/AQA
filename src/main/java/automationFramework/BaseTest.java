@@ -1,14 +1,14 @@
 package automationFramework;
 
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.*;
+
 
 public class BaseTest {
     protected WebDriver webDriver;
 
     @BeforeSuite
-    protected void webDriver () {
+    protected void webDriver() {
         this.webDriver = InitialDriver.getWebDriver();
     }
 
