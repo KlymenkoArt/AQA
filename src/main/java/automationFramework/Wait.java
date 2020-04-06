@@ -39,7 +39,7 @@ public class Wait {
 
     public void waitForAjaxToFinish() {
         WebDriverWait wait = new WebDriverWait(webDriver, 5000);
-        sleep(2);
+        sleep(1);
         wait.until(new ExpectedCondition<Boolean>() {
                        public Boolean apply(WebDriver wdriver) {
                            return ((JavascriptExecutor) webDriver).executeScript("return jQuery.active == 0").equals(true);

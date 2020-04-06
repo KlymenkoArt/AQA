@@ -7,6 +7,10 @@ import org.testng.annotations.*;
 public class BaseTest {
     protected WebDriver webDriver;
 
+    public WebDriver getDriver() {
+        return this.webDriver;
+    }
+
     @BeforeSuite
     protected void webDriver() {
         this.webDriver = InitialDriver.getWebDriver();
