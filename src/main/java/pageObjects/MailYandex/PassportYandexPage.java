@@ -69,12 +69,12 @@ public class PassportYandexPage extends BasePage {
     @Step("Enter value in password field")
     public void enterPassword(String password) {
         wait.isDisplayedElement(passwordField);
-        passwordField.sendKeys(password);
+        actions.sendKeys(passwordField,password).perform();
     }
 
     @Step("logIn of page")
     public MailYandexPage loginToMail() {
-        submit.click();
+        actions.click(submit).perform();
         wait.waitForAjaxToFinish();
         return new MailYandexPage(webDriver);
     }

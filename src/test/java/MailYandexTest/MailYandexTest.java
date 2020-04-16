@@ -102,4 +102,15 @@ public class MailYandexTest extends BaseTest {
         yandexHomePage.selectLanguage("Bel");
         Assert.assertTrue(yandexHomePage.isLanguageSelected("be"), "Language is not Bel");
     }
+
+    @Test
+    public void scrollToElementOnYandexHomePage () {
+        yandexHomePage.scrollUntilElementDisplayed();
+        Assert.assertTrue(yandexHomePage.isLessonLinkDisplayed(), "");
+    }
+    @Test
+    public void sendKeysWithJSTest() {
+        yandexHomePage.enterValueInSearchField();
+        Assert.assertEquals(yandexHomePage.getTextOnSearchField(), "Черкассы");
+    }
 }

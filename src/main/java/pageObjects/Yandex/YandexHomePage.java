@@ -2,9 +2,8 @@ package pageObjects.Yandex;
 
 import automationFramework.Wait;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import pageObjects.BasePage;
@@ -16,6 +15,7 @@ import java.util.List;
 public class YandexHomePage extends BasePage {
     private WebDriver webDriver;
     private Wait wait;
+    private Actions actions;
     @FindBy(xpath = "//a[@data-statlog='tabs.more']")
     private WebElement linkMore;
     @FindBy(className = "geolink__reg")
@@ -24,10 +24,21 @@ public class YandexHomePage extends BasePage {
     private WebElement signIn;
     @FindBy(xpath = "//*[contains(@class, 'b-langs')]//a")
     private WebElement languageDropDown;
+    private By lessonLink = By.xpath("//*[text() = 'Яндекс.Уроки']");
+    private WebElement lesson;
+    @FindBy(xpath = "//*[@id='text']")
+    private WebElement yandexSearchField;
+    @FindBy(xpath = "//button[@type='submit']")
+    private WebElement searchButton;
+    @FindBy(xpath = "//*[@class='input__control mini-suggest__input']")
+    private WebElement resultField;
+
+    private JavascriptExecutor js;
 
     public YandexHomePage(final WebDriver webDriver) {
         this.webDriver = webDriver;
         this.wait = new Wait(webDriver);
+        this.actions = new Actions(this.webDriver);
         PageFactory.initElements(webDriver, this);
     }
 
@@ -89,5 +100,44 @@ public class YandexHomePage extends BasePage {
     public boolean isLanguageSelected(String lang) {
         return this.webDriver.findElement(By.xpath(String.format("//html[@lang='%s']", lang)))
                 .isDisplayed();
+    }
+
+/*
+    public void scrollUntilElementDisplayed() {
+        boolean flag = true;
+        while (flag) {
+            try {
+                lesson = this.webDriver.findElement(lessonLink);
+                flag = false;
+            } catch (NoSuchElementException e) {
+                this.scrollWithJS("500");
+            }
+        }
+    }
+*/
+
+    public void scrollUntilElementDisplayed() {
+        boolean flag = true;
+        while (flag) {
+            try {
+                lesson = this.webDriver.findElement(lessonLink);
+                flag = false;
+            } catch (NoSuchElementException e) {
+                this.actionScroll();
+            }
+        }
+    }
+
+    public boolean isLessonLinkDisplayed() {
+        return lesson.isDisplayed();
+    }
+
+    public void enterValueInSearchField() {
+        sendKeysWithJS("Черкассы", yandexSearchField);
+        clickWithJS(searchButton);
+    }
+
+    public String getTextOnSearchField() {
+        return resultField.getAttribute("value");
     }
 }
