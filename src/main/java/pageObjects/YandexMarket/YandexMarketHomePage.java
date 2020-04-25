@@ -30,11 +30,24 @@ public class YandexMarketHomePage extends BasePage {
     WebElement deliveryMethodRadioButton;
     @FindBy(id = "header-search")
     WebElement searchField;
-    @FindBy(xpath = "//button[@role='button']")
+    @FindBy(xpath = "//button[@type='submit']")
     WebElement searchButton;
     @FindBy(xpath = "//*[@class='n-filter-panel-dropdown__main']//*[contains(@data-bem, 'aprice')]/a")
     WebElement sortByPriceButton;
-
+    @FindBy(xpath = "(//div[contains(@class,'n-product-toolbar__item link')])[1]")
+    WebElement compareFirstElement;
+    @FindBy(xpath = "(//div[contains(@class,'n-product-toolbar__item link')])[2]")
+    WebElement compareSecondElement;
+    @FindBy(xpath = "//a[@data-bem='{\"button\":{}}']")
+    WebElement compareButton;
+    @FindBy(xpath = "//*[@class='n-compare-toolbar__action-clear link']")
+    WebElement deleteListButton;
+    @FindBy(xpath = "//span[text()='Бытовая техника']")
+    WebElement appliancesLink;
+    @FindBy(linkText = "Холодильники")
+    WebElement refrigerator;
+    @FindBy(xpath = "//*[@placeholder='121']")
+    WebElement width;
     List<String> listValues;
 
     public YandexMarketHomePage(final WebDriver webDriver) {
@@ -46,7 +59,7 @@ public class YandexMarketHomePage extends BasePage {
 
     public void getPage() {
         webDriver.get("https://market.yandex.by/catalog--mobilnye-telefony-v-minske/54726/list?local-offers-first=0&onstock=1");
-        this.wait.sleep(5);
+        this.wait.sleep(10);
     }
 
     public void selectCheckBoxXiaomi() {
@@ -57,12 +70,13 @@ public class YandexMarketHomePage extends BasePage {
         }
     }
 
-    public void selectRadioButton(boolean isRadioBoxSelected) {
+    public YandexMarketHomePage selectRadioButton(boolean isRadioBoxSelected) {
         if (!isRadioBoxSelected) {
             this.clickWithWait(this.webDriver.findElement(By.xpath("//input[@id = 'offer-shipping_pickup']")));
             this.wait.sleep(2);
             wait.waitForAjaxToFinish();
         }
+        return this;
     }
 
     public boolean isCheckBoxSelected() {
@@ -75,7 +89,7 @@ public class YandexMarketHomePage extends BasePage {
         return deliveryMethodRadioButton.isSelected();
     }
 
-    public void changeProductsDisplayed(String countOfElement) {
+    public YandexMarketHomePage changeProductsDisplayed(String countOfElement) {
         wait.sleep(6);
         actions.moveToElement(showNumberOfElementsButton);
         this.clickWithWait(showNumberOfElementsButton);
@@ -84,15 +98,22 @@ public class YandexMarketHomePage extends BasePage {
                         .findElement(By.xpath("//button[contains(@class,'button button_theme_normal')]/span")),
                 "Показывать по " + countOfElement));
         this.wait.waitForAjaxToFinish();
+        return this;
     }
 
-    public void sortByPrice() {
+    public YandexMarketHomePage sortByPrice() {
         sortByPriceButton.click();
         this.wait.waitForAjaxToFinish();
+        return this;
     }
 
-    public int getQuantityElementsOfPage() {
-        String countElements = "//div[@class='n-snippet-cell2__main-price']//div[@class='price']";
+    public int getQuantityElementsOfPage(boolean fullDescription) {
+        String countElements;
+        if (fullDescription) {
+            countElements = "//div[@class='n-snippet-card2__main-price-wrapper']//div[@class='price']";
+        } else {
+            countElements = "//div[@class='n-snippet-cell2__main-price']//div[@class='price']";
+        }
         List<WebElement> numList = this.webDriver.findElements(By.xpath(countElements));
         listValues = new ArrayList<>();
         for (final WebElement element : numList) {
@@ -102,7 +123,6 @@ public class YandexMarketHomePage extends BasePage {
     }
 
     public List<Double> getPricesOfProducts() {
-        this.getQuantityElementsOfPage();
         List<Double> doubleList = new ArrayList<>();
         for (String listValue : listValues) {
             doubleList.add(Double.parseDouble(listValue.replace(" б.p.", "")
@@ -130,17 +150,97 @@ public class YandexMarketHomePage extends BasePage {
         return true;
     }
 
-    public void enterValueInSearchField(final String value) {
+    public YandexMarketHomePage enterValueInSearchField(final String value) {
+        wait.sleep(10);
         actions.moveToElement(searchField);
-        this.sendKeysWithWait(searchField, value);
+        sendKeysWithWait(searchField, value);
+        return this;
     }
 
-    public void clickToSearch() {
-        searchButton.click();
+    public YandexMarketHomePage clickToSearch() {
+        clickWithWait(searchButton);
+        return this;
     }
 
     public String getValueFromSearchField() {
         this.webDriver.findElements(By.id("header-search"));
         return searchField.getAttribute("value");
+    }
+
+    public YandexMarketHomePage addFirstTwoElementsToCompare() {
+        wait.sleep(3);
+        clickWithJS(compareFirstElement);
+        wait.waitForAjaxToFinish();
+        clickWithJS(compareSecondElement);
+        wait.waitForAjaxToFinish();
+        return this;
+    }
+
+    public List<String> getNameOfProducts() {
+        List<String> listNames = new ArrayList<>();
+        for (int i = 1; i < 3; i++) {
+            listNames.add(this.webDriver.findElement(By.xpath("(//*[contains(@class, 'header')]" +
+                    "//*[contains(@class, 'link_type_cpc')])[" + i + "]"))
+                    .getAttribute("title"));
+        }
+        return listNames;
+    }
+
+    public YandexMarketHomePage goToComparePage() {
+        wait.isDisplayedElement(compareButton);
+        clickWithJS(compareButton);
+        return this;
+    }
+
+    public List<String> getElementsFromComparePage() {
+        List<String> listNamesOnComparePage = new ArrayList<>();
+        for (int i = 2; i > 0; i--) {
+            listNamesOnComparePage.add(this.webDriver.findElement(By.xpath("(//*[@class='n-compare-head__image']" +
+                    "//*[@class='image'])[" + i + "]"))
+                    .getAttribute("alt"));
+        }
+        return listNamesOnComparePage;
+    }
+
+    public YandexMarketHomePage deleteElementsFromCompare() {
+        clickWithJS(deleteListButton);
+        return this;
+    }
+
+    public String getTextAfterClearCompareList() {
+        return this.webDriver.findElement(By.xpath("//*[@class='n-compare-empty__content']")).getText();
+    }
+
+    public YandexMarketHomePage selectCategoryOfActionCameras() {
+        clickWithWait(this.webDriver.findElement(By.xpath("//a[@href='/catalog--elektronika/54440']")));
+        scrollWithJS("650");
+        clickWithWait(this.webDriver.findElement(By.xpath("//a[contains(@href, '/catalog--ekshn-kamery-v-minske')]")));
+        return this;
+    }
+
+    public YandexMarketHomePage selectCategoryOfRefrigerators() {
+        wait.isDisplayedElement(appliancesLink);
+        clickWithJS(appliancesLink);
+        wait.isDisplayedElement(refrigerator);
+        clickWithJS(refrigerator);
+        return this;
+    }
+
+    public YandexMarketHomePage enableFilterWidth() {
+        scrollWithJS("1500");
+        actions.moveToElement(width);
+        width.click();
+        width.sendKeys("50");
+        wait.waitForAjaxToFinish();
+        return this;
+    }
+
+    public List<Double> getCharacteristicOfRefrigerator() {
+        List<Double> doubleListWithWidth = new ArrayList<>();
+        for (final WebElement element : this.webDriver.findElements(By.xpath("//*[contains(text(),'ШхВхГ:')]"))) {
+            String characteristic = element.getText().replace("ШхВхГ: ", "");
+            doubleListWithWidth.add(Double.parseDouble(characteristic.substring(0, characteristic.indexOf("х"))));
+        }
+        return doubleListWithWidth;
     }
 }

@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import pageObjects.BasePage;
 import pageObjects.MailYandex.PassportYandexPage;
+import pageObjects.YandexMarket.YandexMarketHomePage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,6 @@ import java.util.List;
 public class YandexHomePage extends BasePage {
     private WebDriver webDriver;
     private Wait wait;
-    private Actions actions;
     @FindBy(xpath = "//a[@data-statlog='tabs.more']")
     private WebElement linkMore;
     @FindBy(className = "geolink__reg")
@@ -32,13 +32,16 @@ public class YandexHomePage extends BasePage {
     private WebElement searchButton;
     @FindBy(xpath = "//*[@class='input__control mini-suggest__input']")
     private WebElement resultField;
+    @FindBy(xpath = "//*[@data-id = 'market']")
+    private WebElement marketLink;
+    @FindBy(xpath = "//*[@data-id = 'music']")
+    private WebElement musicLink;
 
     private JavascriptExecutor js;
 
     public YandexHomePage(final WebDriver webDriver) {
         this.webDriver = webDriver;
         this.wait = new Wait(webDriver);
-        this.actions = new Actions(this.webDriver);
         PageFactory.initElements(webDriver, this);
     }
 
@@ -102,20 +105,6 @@ public class YandexHomePage extends BasePage {
                 .isDisplayed();
     }
 
-/*
-    public void scrollUntilElementDisplayed() {
-        boolean flag = true;
-        while (flag) {
-            try {
-                lesson = this.webDriver.findElement(lessonLink);
-                flag = false;
-            } catch (NoSuchElementException e) {
-                this.scrollWithJS("500");
-            }
-        }
-    }
-*/
-
     public void scrollUntilElementDisplayed() {
         boolean flag = true;
         while (flag) {
@@ -128,7 +117,7 @@ public class YandexHomePage extends BasePage {
         }
     }
 
-    public boolean isLessonLinkDisplayed() {
+    public boolean checkLessonLink() {
         return lesson.isDisplayed();
     }
 
@@ -139,5 +128,10 @@ public class YandexHomePage extends BasePage {
 
     public String getTextOnSearchField() {
         return resultField.getAttribute("value");
+    }
+
+    public MusicYandexPage clickToMusicLink() {
+        clickWithWait(musicLink);
+        return new MusicYandexPage(webDriver);
     }
 }
