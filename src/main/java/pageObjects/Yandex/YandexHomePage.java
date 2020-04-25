@@ -2,13 +2,13 @@ package pageObjects.Yandex;
 
 import automationFramework.Wait;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import pageObjects.BasePage;
 import pageObjects.MailYandex.PassportYandexPage;
+import pageObjects.YandexMarket.YandexMarketHomePage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,20 @@ public class YandexHomePage extends BasePage {
     private WebElement signIn;
     @FindBy(xpath = "//*[contains(@class, 'b-langs')]//a")
     private WebElement languageDropDown;
+    private By lessonLink = By.xpath("//*[text() = 'Яндекс.Уроки']");
+    private WebElement lesson;
+    @FindBy(xpath = "//*[@id='text']")
+    private WebElement yandexSearchField;
+    @FindBy(xpath = "//button[@type='submit']")
+    private WebElement searchButton;
+    @FindBy(xpath = "//*[@class='input__control mini-suggest__input']")
+    private WebElement resultField;
+    @FindBy(xpath = "//*[@data-id = 'market']")
+    private WebElement marketLink;
+    @FindBy(xpath = "//*[@data-id = 'music']")
+    private WebElement musicLink;
+
+    private JavascriptExecutor js;
 
     public YandexHomePage(final WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -89,5 +103,35 @@ public class YandexHomePage extends BasePage {
     public boolean isLanguageSelected(String lang) {
         return this.webDriver.findElement(By.xpath(String.format("//html[@lang='%s']", lang)))
                 .isDisplayed();
+    }
+
+    public void scrollUntilElementDisplayed() {
+        boolean flag = true;
+        while (flag) {
+            try {
+                lesson = this.webDriver.findElement(lessonLink);
+                flag = false;
+            } catch (NoSuchElementException e) {
+                this.actionScroll();
+            }
+        }
+    }
+
+    public boolean checkLessonLink() {
+        return lesson.isDisplayed();
+    }
+
+    public void enterValueInSearchField() {
+        sendKeysWithJS("Черкассы", yandexSearchField);
+        clickWithJS(searchButton);
+    }
+
+    public String getTextOnSearchField() {
+        return resultField.getAttribute("value");
+    }
+
+    public MusicYandexPage clickToMusicLink() {
+        clickWithWait(musicLink);
+        return new MusicYandexPage(webDriver);
     }
 }

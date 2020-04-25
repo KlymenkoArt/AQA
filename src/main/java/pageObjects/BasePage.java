@@ -2,9 +2,8 @@ package pageObjects;
 
 import automationFramework.InitialDriver;
 import automationFramework.Wait;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,5 +48,34 @@ public class BasePage {
         final List<String> tabs = this.getActiveTabs();
         this.switchToTab(tabs.get(1));
         return this.webDriver.getCurrentUrl();
+    }
+
+    public boolean isDisplayedElement(WebElement webElement) {
+        try {
+            webElement.isDisplayed();
+            return true;
+        } catch (final NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public void actionScroll() {
+        Actions actions = new Actions(this.webDriver);
+        actions.sendKeys(Keys.PAGE_DOWN).build().perform();
+    }
+
+    public void scrollWithJS(String heightOfScroll) {
+        JavascriptExecutor js = (JavascriptExecutor) this.webDriver;
+        js.executeScript("javascript:window.scrollBy(0, " + heightOfScroll + ")");
+    }
+
+    public void sendKeysWithJS(String longString, WebElement webElement){
+        JavascriptExecutor js = (JavascriptExecutor) this.webDriver;
+        js.executeScript("arguments[0].setAttribute('value', '" + longString +"')", webElement);
+    }
+
+    public void clickWithJS (WebElement webElement) {
+        JavascriptExecutor js = (JavascriptExecutor) this.webDriver;
+        js.executeScript("arguments[0].click();", webElement);
     }
 }

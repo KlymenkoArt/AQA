@@ -42,8 +42,8 @@ public class MailYandexTest extends BaseTest {
 
         PassportYandexPage passportYandexPage = yandexHomePage.clickSignIn();
         closeTab();
-        passportYandexPage.enterLogin("380939791927", 0);
-        passportYandexPage.enterPassword("fhxbr1996");
+        passportYandexPage.enterLogin("380939791927", 0)
+                .enterPassword("fhxbr1996");
         MailYandexPage mailYandexPage = passportYandexPage.loginToMail();
         Assert.assertEquals(mailYandexPage.getUserName(), "380939791927", "Incorrect user");
         mailYandexPage.logout();
@@ -65,9 +65,9 @@ public class MailYandexTest extends BaseTest {
 
         PassportYandexPage passportYandexPage = yandexHomePage.clickSignIn();
         closeTab();
-        passportYandexPage.enterLogin("380939791927", 0);
-        passportYandexPage.enterPassword("fhxbr19966");
-        passportYandexPage.loginToMail();
+        passportYandexPage.enterLogin("380939791927", 0)
+                .enterPassword("fhxbr19966")
+                .loginToMail();
         Assert.assertEquals(passportYandexPage.getErrorMessage(), "Неверный пароль", "Entered correct password");
     }
 
@@ -101,5 +101,17 @@ public class MailYandexTest extends BaseTest {
 
         yandexHomePage.selectLanguage("Bel");
         Assert.assertTrue(yandexHomePage.isLanguageSelected("be"), "Language is not Bel");
+    }
+
+    @Test
+    public void scrollToElementOnYandexHomePage() {
+        yandexHomePage.scrollUntilElementDisplayed();
+        Assert.assertTrue(yandexHomePage.checkLessonLink(), "");
+    }
+
+    @Test
+    public void sendKeysWithJSTest() {
+        yandexHomePage.enterValueInSearchField();
+        Assert.assertEquals(yandexHomePage.getTextOnSearchField(), "Черкассы");
     }
 }

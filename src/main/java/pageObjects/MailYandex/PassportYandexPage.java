@@ -38,13 +38,14 @@ public class PassportYandexPage extends BasePage {
         PageFactory.initElements(webDriver, this);
     }
 
-    private void enterTextInLoginField(String login) {
+    private PassportYandexPage enterTextInLoginField(String login) {
         actions.sendKeys(loginField, login).perform();
         actions.click(submit).perform();
+        return this;
     }
 
     @Step("Enter login")
-    public void enterLogin(String login, int numberPage) {
+    public PassportYandexPage enterLogin(String login, int numberPage) {
         final List<String> tabs = this.getActiveTabs();
         this.switchToTab(tabs.get(numberPage));
         if (isAccountExist()) {
@@ -54,6 +55,7 @@ public class PassportYandexPage extends BasePage {
             enterTextInLoginField(login);
         }
         wait.waitForAjaxToFinish();
+        return this;
     }
 
     @Step("Change user")
@@ -67,14 +69,16 @@ public class PassportYandexPage extends BasePage {
     }
 
     @Step("Enter value in password field")
-    public void enterPassword(String password) {
+    public PassportYandexPage enterPassword(String password) {
         wait.isDisplayedElement(passwordField);
-        passwordField.sendKeys(password);
+        actions.sendKeys(passwordField,password).perform();
+        wait.sleep(2);
+        return this;
     }
 
     @Step("logIn of page")
     public MailYandexPage loginToMail() {
-        submit.click();
+        actions.click(submit).perform();
         wait.waitForAjaxToFinish();
         return new MailYandexPage(webDriver);
     }
@@ -84,9 +88,10 @@ public class PassportYandexPage extends BasePage {
         return errorMessage.getText();
     }
 
-    public void signInOnOtherAccount() {
+    public PassportYandexPage signInOnOtherAccount() {
         dropDownButton.click();
         wait.waitForAjaxToFinish();
         signInButton.click();
+        return this;
     }
 }
