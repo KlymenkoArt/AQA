@@ -46,8 +46,8 @@ public class PassportYandexPage extends BasePage {
 
     @Step("Enter login")
     public PassportYandexPage enterLogin(String login, int numberPage) {
-        final List<String> tabs = this.getActiveTabs();
-        this.switchToTab(tabs.get(numberPage));
+        //final List<String> tabs = this.getActiveTabs();
+     //   this.switchToTab(tabs.get(numberPage));
         if (isAccountExist()) {
             signInOnOtherAccount();
             enterTextInLoginField(login);

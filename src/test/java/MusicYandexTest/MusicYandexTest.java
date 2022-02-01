@@ -17,7 +17,6 @@ public class MusicYandexTest extends BaseTest {
         yandexHomePage = new YandexHomePage(webDriver);
         yandexHomePage.getPage();
         PassportYandexPage passportYandexPage = yandexHomePage.clickSignIn();
-        closeTab();
         passportYandexPage.enterLogin("380939791927", 0)
                 .enterPassword("fhxbr1996")
                 .loginToMail();

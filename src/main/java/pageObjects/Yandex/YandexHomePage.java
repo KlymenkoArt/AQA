@@ -20,7 +20,7 @@ public class YandexHomePage extends BasePage {
     private WebElement linkMore;
     @FindBy(className = "geolink__reg")
     private WebElement geoLink;
-    @FindBy(xpath = "//*[contains(@class, 'login')]//*[@class='button__text']")
+    @FindBy(xpath = "(//a[contains(@class,'home-link desk-notif-card__login-new-item')]//div)[2]")
     private WebElement signIn;
     @FindBy(xpath = "//*[contains(@class, 'b-langs')]//a")
     private WebElement languageDropDown;
@@ -45,9 +45,9 @@ public class YandexHomePage extends BasePage {
         PageFactory.initElements(webDriver, this);
     }
 
-    @Step("Open base page: http://www.yandex.by/")
+    @Step("Open base page: http://www.yandex.ru/")
     public void getPage() {
-        webDriver.get("http://www.yandex.by/");
+        webDriver.get("http://www.yandex.ru/");
     }
 
     @Step("Click on link to change location")
@@ -73,7 +73,7 @@ public class YandexHomePage extends BasePage {
 
     @Step("Click to button SignIn")
     public PassportYandexPage clickSignIn() {
-        clickWithWait(signIn.findElement(By.xpath("./..")));
+        clickWithWait(signIn);
         return new PassportYandexPage(webDriver);
     }
 

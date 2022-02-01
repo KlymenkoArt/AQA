@@ -14,11 +14,15 @@ public class PersonalInfo extends BasePage {
     Actions actions;
 
     @FindBy(xpath = "//p[text()='Cherkasy']")
-    static WebElement location;
+    private WebElement location;
     @FindBy(xpath = "(//div[@automation-id=\"hr-info-inline\"])//span")
-    static WebElement hrInfo;
+    private WebElement hrInfo;
     @FindBy(xpath = "(//div[@class='position'])/p[@class='text']")
-    static WebElement position;
+    private WebElement position;
+    @FindBy(xpath = "(//div[@class='menu-avatar'])//div")
+    private WebElement hamburgerMenu;
+    @FindBy(linkText = "Sign Out")
+    private WebElement signOutButton;
 
 
     public PersonalInfo(final WebDriver webDriver) {
@@ -43,5 +47,10 @@ public class PersonalInfo extends BasePage {
 
     public WebElement getPosition() {
         return position;
+    }
+
+    public void signOut() {
+        clickWithWait(hamburgerMenu);
+        clickWithWait(signOutButton);
     }
 }

@@ -23,15 +23,12 @@ public class BBCTest extends BaseTest {
         Assert.assertEquals(bbcSearchResultPage.getTextFromResultSearchField(),
                 searchText,
                 "coronavirus");
-        textOfLink = bbcSearchResultPage.getTexOfAFirstLink();
-        bbcSearchResultPage.followALink();
-        Assert.assertTrue(textOfLink.contains(bbcSearchResultPage.getTextOfAResultPage()));
     }
 
     @Test
     public void compareArray() {
-        int[] intArr = new int[] {34, 54, 48};
-        int[] intArrToCompare = new int[] {34, 54, 48};
+        int[] intArr = new int[]{34, 54, 48};
+        int[] intArrToCompare = new int[]{34, 54, 48};
         String[] stringArr = new String[]{"Hello, I`m testing message"};
         String[] stringArrayToCompare = new String[]{"Hello, I`m testing message"};
         int value = 145;

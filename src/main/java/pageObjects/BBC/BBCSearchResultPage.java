@@ -17,7 +17,7 @@ public class BBCSearchResultPage extends BasePage {
     @FindBy(xpath = "//input[@id='search-input']")
     private WebElement resultStats;
 
-    @FindBy(xpath = "((//*[contains(@class,'PromoHeadline')]/a)[3]/span)")
+    @FindBy(xpath = "(//*[contains(@class,'PromoHeadline')]/span)[1]")
     private WebElement textOfAFirstLink;
 
     @FindBy(xpath = "//a[contains(text(),'Adrian Goldberg')][1]")

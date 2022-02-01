@@ -32,7 +32,6 @@ public class TeamAndersenAuthPage extends BasePage {
 
     public TeamAndersenAuthPage getPage() {
         webDriver.get("https://auth.andersenlab.com/login");
-        this.wait.sleep(6);
         return this;
     }
 
